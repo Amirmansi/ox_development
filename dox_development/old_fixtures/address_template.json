@@ -1,0 +1,11 @@
+[
+ {
+  "country": "Saudi Arabia",
+  "docstatus": 0,
+  "doctype": "Address Template",
+  "is_default": 1,
+  "modified": "2023-01-04 16:15:40.046959",
+  "name": "Saudi Arabia",
+  "template": "{{ address_line1 }}-{{ address_line2 }} <br>\n{{ county }} {{city}} {{pincode}}<br>\n{{state}} - {{country_ar}}\n"
+ }
+]

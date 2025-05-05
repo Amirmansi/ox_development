@@ -1,0 +1,24 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Customer",
+  "enabled": 1,
+  "modified": "2023-01-27 19:45:49.137623",
+  "module": "Dox Development",
+  "name": "Customer Script",
+  "script": "frappe.ui.form.on('Customer', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tfrm.add_custom_button(\"Create Payment\", () => {\n\t\t\tfrappe.model.open_mapped_doc({\n\t\t\t    method: \"branch_customization.api.make_payment_entry\",\n\t\t\t    frm: cur_frm\n\t\t    })\n\t\t})\n\t\t\tfrm.add_custom_button(__('View Statement'), function () {\n\t\t\t\tfrappe.set_route('query-report', 'Customer Statement',\n\t\t\t\t\t{party_type: 'Customer', party: frm.doc.name});\n\t\t\t}, __('View'));\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Address",
+  "enabled": 1,
+  "modified": "2023-01-04 16:10:07.682900",
+  "module": "Dox Development",
+  "name": "Address",
+  "script": "frappe.ui.form.on('Address', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tif(frm.doc.customer_address){\n\t\t    frm.trigger(\"make_fields_readonly\");\n\t\t}\n\t},\n\tmake_fields_readonly:function(frm,cdt,cdn) {\n\t\t\tlet meta = frappe.get_meta(\"Address\");\n\t\t\tmeta.fields.forEach(value => {\n\t\t\t\tif (![\"Section Break\", \"Column Break\",\"Tab Break\"].includes(value.fieldtype)) {\n\t\t\t\t    frm.set_df_property(value.fieldname,'read_only', 1);\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t});\n\t\t\n\t},\n})",
+  "view": "Form"
+ }
+]

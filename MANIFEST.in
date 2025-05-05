@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include dox_development *.css
+recursive-include dox_development *.csv
+recursive-include dox_development *.html
+recursive-include dox_development *.ico
+recursive-include dox_development *.js
+recursive-include dox_development *.json
+recursive-include dox_development *.md
+recursive-include dox_development *.png
+recursive-include dox_development *.py
+recursive-include dox_development *.svg
+recursive-include dox_development *.txt
+recursive-exclude dox_development *.pyc
