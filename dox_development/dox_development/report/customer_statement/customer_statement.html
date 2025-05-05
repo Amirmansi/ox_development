@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cairo&display=swap">
+    <style>
+        .print-format {
+            font-family: "Cairo";
+        }
+
+        @media screen {
+            .print-format-gutter {
+                background-color: #eee !important;
+                border-bottom: 0px !important;
+            }
+        }
+
+        .table {
+            font-size: 12px;
+        }
+
+        .ql-editor.read-mode {
+            font-family: "Cairo";
+            text-align: right;
+            font-size: 13px;
+            height: unset;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table table-bordered">
+        <tr>
+            <td colspan="2" rowspan="3" style="width: 12%; height: 100px;"> <!-- Set a fixed height -->
+                <img src="/files/Al-Kheiata%20Logo.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </td>
+            <td colspan="12" style="text-align: center; font-size: 22px;">
+                <b>{% if (filters.company) { %}
+                    {%= filters.company %}
+                    {% } %}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="12" style="text-align: center;font-size: 18px;">
+                <b>{{ __("Customer Statement") }}</b>
+            </td>
+        </tr>
+        <tr>
+            <td width="14%"></td>
+            <td width="15%" style="text-align: left;">{%= __("From Date")
+                %}:</td>
+            <td width="15%" style="text-align: left;">{%=frappe.datetime.str_to_user(filters.from_date) %}</td>
+            <td width="15%" style="text-align: left;">
+                {%= __("To Date") %}:
+            </td>
+            <td width="15%" style="text-align:left ;">{%= frappe.datetime.str_to_user(filters.to_date) %}</td>
+            <td width="20%"></td>
+        </tr>
+    </table>
+
+    <table width="100%" class="table table-bordered">
+        <tr>
+            <td colspan="2" style="width: 15%;">
+                {{ __("Customer ID") }}:
+            </td>
+            <td colspan="2" style="width: 38%;">
+                {% if (filters.party && filters.party.length) %}
+                {{ filters.party }}
+                {% endif %}
+            </td>
+            <td colspan="12">
+                {{ __("Customer Address") }}:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">{%= __("Customer Name") %}:</td>
+            <td colspan="2">{% if (filters.party_name) { %}
+                {%= filters.party_name %}
+                {% } %}</td>
+            <td colspan="12" style="border-bottom: hidden;">
+                {{ __(data[data.length - 1].address.address_title) || "" }} &nbsp;
+                {{ __(data[data.length - 1].address.address_line1) }} &nbsp;
+                {{ __(data[data.length - 1].address.city) }} &ensp;
+                {{ __(data[data.length - 1].address.country) }} &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{ __("Branch") }}:
+            </td>
+            <td colspan="2">
+                {% if (filters.branch) { %}
+                {%= filters.branch %}
+                {% } %}
+            </td>
+        </tr>
+    </table>
+
+
+
+    <table class="table table-bordered">
+        <thead class="print-format-gutter">
+            <tr>
+                <th colspan="2" style="width:16%"><b>{%= __("Opening Balance") %}:</b></th>
+                <th colspan="2" style="width:16%"><b>{%= __("Total Debit") %}:</b></th>
+                <th colspan="2" style="width:16%"><b>{%= __("Total Credit") %}:</b></th>
+                <th colspan="2" style="width:16%"><b>{%= __("Outstanding") %}:</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <td colspan="2">{%= format_currency(flt(data[0].balance)) %}</td>
+            <td colspan="2">{%= format_currency(flt(data[data.length - 2].debit)) %}</td>
+            <td colspan="2">{%= format_currency(flt(data[data.length - 2].credit)) %}</td>
+            <td colspan="2">{%= format_currency(flt(data[data.length - 1].balance)) %}</td>
+        </tbody>
+    </table>
+
+
+    <hr>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 5%">{%= __("Nr.") %}</th>
+                <th style="width: 10%">{%= __("Date") %}</th>
+                <th style="width: 12%">{%= __("Voucher type") %}</th>
+                <th style="width: 15%">{%= __("Voucher No") %}</th>
+                {% if (filters.remark) { %}
+                <th style="width: 22%">{%= __("Remarks") %}</th>
+                {% } %}
+                <th style="width: 10%">{%= __("Debit") %}</th>
+                <th style="width: 10%">{%= __("Credit") %}</th>
+                <th style="width: 10%">{%= __("Balance (Dr - Cr)") %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (var i = 0, l = data.length; i < l - 2; i++) { %} <tr>
+                <td>{%= i + 1 %}</td>
+                <td>{%= frappe.datetime.str_to_user(data[i].posting_date) %}</td>
+                <td>{%= __(data[i].voucher_type) %}</td>
+                <td>{%= data[i].voucher_no %}</td>
+                {% if (filters.remark) { %}
+                {% var longest_word = cstr(data[i].remarks).split(" ").reduce((longest, word) => word.length >
+                longest.length ? word : longest, ""); %}
+                <td {% if (longest_word.length> 45) { %} class="overflow-wrap-anywhere" {% } %}>
+                    <span>
+                        {% if (!(filters.party || filters.account)) { %}
+                        {%= data[i].party || data[i].account %}
+                        <br>
+                        {% } %}
+                        <br>
+                        {%= __("Remarks") %}: {%= data[i].remarks %}
+                        {% if (data[i].bill_no) { %}
+                        <br>{%= __("Supplier Invoice No") %}: {%= data[i].bill_no %}
+                        {% } %}
+                    </span>
+                </td>
+                {% endif %}
+                <td style="text-align: right">
+                    {%= format_currency(data[i].debit, filters.presentation_currency || data[i].account_currency) %}
+                </td>
+                <td style="text-align: right">
+                    {%= format_currency(data[i].credit, filters.presentation_currency || data[i].account_currency) %}
+                </td>
+                <td style="text-align: right">
+                    {%= format_currency(data[i].balance, filters.presentation_currency || data[i].account_currency) %}
+                </td>
+                </tr>
+                {% } %}
+        </tbody>
+    </table>
+    <div>
+        {% if (filters.terms) { %}
+        {{ __(data[data.length - 1].terms) || "" }}
+        {% } %}
+    </div>
+    <p class="text-right text-muted">Printed On {%=
+        frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+    </p>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<h2 class="text-center">{%= __("Item Card Qty") %}</h2>
+<h4 class="text-center">
+    {% if (filters.item_code) { %}
+    {%= filters.item_code %}
+    {% } %}
+</h4>
+<h4 class="text-center">
+    {% if (filters.warehouse) { %}
+    {%= filters.warehouse %}
+    {% } %}
+</h4>
+
+<style>
+    #table1 {
+        display: inline-block;
+        direction: auto;
+    }
+
+    #table2 {
+        display: inline-block;
+        direction: auto;
+    }
+</style>
+<h5 class="text-center">
+    {%= frappe.datetime.str_to_user(filters.from_date) %}
+    {%= __("to") %}
+    {%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+<hr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{%= __("No.") %}</th>
+            <th>{%= __("Date") %}</th>
+            <th>{%= __("UOM") %}</th>
+            <th>{%= __("In Qty") %}</th>
+            <th>{%= __("Out Qty") %}</th>
+            <th>{%= __("Balance Qty") %}</th>
+            <th>{%= __("Voucher #") %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for(var i=0, l=data.length; i<l; i++) { %} <tr>
+            <td>{%= i+1 %}</td>
+            <td>{%= frappe.datetime.str_to_user(data[i].posting_date) %}</td>
+            <td>{%= data[i].stock_uom %}</td>
+            <td>{%= data[i].in_qty %}</td>
+            <td>{%= data[i].out_qty %}</td>
+            <td>{%= data[i].qty_after_transaction %}</td>
+            <td>{%= data[i].voucher_no %}</td>
+            </tr>
+            {% } %}
+    </tbody>
+
+</table>
+<div>
+    <table id="table1">
+        <tr>
+            <td>{%= __("Qty in") %}:</td>
+            <td>{{ data[data.length - 1].total_in }}</td>
+        </tr>
+        <tr>
+            <td>{%= __("Qty out") %}:</td>
+            <td>{{ data[data.length - 1].total_out }}</td>
+        </tr>
+        <tr>
+            <td>{%= __("Balance Qty") %}:</td>
+            <td>{{ data[data.length - 1].qty_after_transaction }}</td>
+        </tr>
+    </table>
+
+    <table id="table2">
+        <tr>
+            <td>{%= __("Sales") %}:</td>
+            <td>{{ data[data.length - 1].total_sales }}</td>
+
+        </tr>
+        <tr>
+            <td>{%= __("Purchase") %}:</td>
+            <td>{{ data[data.length - 1].total_purchase }}</td>
+        </tr>
+        <tr>
+            <td>{%= __("Stock Entry") %}:</td>
+            <td>{{ data[data.length - 1].total_stock }}</td>
+        </tr>
+        <tr>
+            <td>{%= __("Reconciliation") %}:</td>
+            <td>{{ data[data.length - 1].reconcilation }}</td>
+        </tr>
+    </table>
+</div>
+<br>
+<p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+</p>

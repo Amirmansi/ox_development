@@ -1,0 +1,16 @@
+{% if data.length %}
+<table class="table">
+	<thead id="thead">
+	</thead>
+	<tbody id="tbody">
+	</tbody>
+</table>
+{% else %}
+<div class="no-background-jobs">
+	<img
+		src="/assets/frappe/images/ui-states/list-empty-state.svg"
+		alt="Empty State"
+	/>
+	<p class="text-muted">{{ __("No data found") }}</p>
+</div>
+{% endif %}

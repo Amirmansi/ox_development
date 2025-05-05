@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2022-12-29 15:41:53.954765",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2022-12-29 15:42:23.758607",
+ "modified_by": "Administrator",
+ "module": "Dox Development",
+ "name": "item-sales-page",
+ "owner": "Administrator",
+ "page_name": "item-sales-page",
+ "roles": [
+  {
+   "role": "Administrator"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 1,
+ "title": "Item Sales Page"
+}

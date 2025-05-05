@@ -1,0 +1,33 @@
+<h2 class="text-center">{%= __("Branch Inventory Quantity") %}</h2>
+<h4 class="text-center">
+    {% if filters.branch %}
+    {%= filters.branch %}
+    {% endif %}
+</h4>
+
+<h5 class="text-center">
+    {%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+
+<hr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 2%">{%= __("No.") %}</th>
+            {% for column in columns %}
+            <th style="width: 4%">{%= __(column.label) %}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for (var i = 0; i < data.length; i++) { %} <tr>
+            <td>{%= i + 1 %}</td>
+            {% for column in columns %}
+            <td>{%= __(data[i][column.fieldname]) %}</td>
+            {% endfor %}
+            </tr>
+            {% } %}
+    </tbody>
+</table>
+<p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+</p>

@@ -1,0 +1,11 @@
+.no-background-jobs{
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.no-background-jobs > img {
+    margin-bottom: var(--margin-md);
+    max-height: 100px;
+}

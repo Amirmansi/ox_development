@@ -1,0 +1,60 @@
+<h2 class="text-center">{%= __("Warehouse Inventory Qty") %}</h2>
+<h4 class="text-center">
+    {% if (filters.warehouse) { %}
+    {%= filters.warehouse %}
+    {% } %}
+</h4>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+
+    #table1 {
+        direction: auto;
+        margin-left: 100px;
+        margin-right: 20px;
+        float: left;
+    }
+</style>
+<h5 class="text-center">
+    {%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+<hr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{%= __("No.") %}</th>
+            <th>{%= __("Brand") %}</th>
+            <th>{%= __("Item Name") %}</th>
+            <th>{%= __("Stock UOM") %}</th>
+            <th>{%= __("Batch") %}</th>
+            <th>{%= __("Balance Qty") %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for(var i=0, l=data.length; i<l; i++) { %} <tr>
+            <td>{%= i+1 %}</td>
+            <td>{%= data[i].brand %}</td>
+            <td>{%= data[i].item_name %}</td>
+            <td>{%= data[i].stock_uom %}</td>
+            <td>{%= data[i].batch_no %}</td>
+            <td>{%= data[i].bal_qty %}</td>
+            </tr>
+            {% } %}
+    </tbody>
+</table>
+<div class="container">
+    <table id="table1">
+        <tr>
+            <td colspan="3" style="text-align: right;">{%= __("Total Balance Qty") %}:</td>
+            <td>{{ data[data.length - 2].total_balance_qty }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: right;">{%= __("Count of Inventory Item") %}:</td>
+            <td>{{ data[data.length - 2].total_inventory_item }}</td>
+        </tr>
+    </table>
+</div>
+<p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+</p>
